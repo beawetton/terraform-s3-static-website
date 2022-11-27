@@ -2,7 +2,7 @@
 resource "aws_s3_bucket" "www_bucket" {
   bucket = "www.${var.bucket_name}"
   acl    = "public-read"
-  policy = data.aws_iam_policy_document.allow_public_s3_read.json
+  policy = data.aws_iam_policy_document.allow_public_s3_read2.json
 
   cors_rule {
     allowed_headers = ["Authorization", "Content-Length"]
@@ -44,12 +44,34 @@ data "aws_iam_policy_document" "allow_public_s3_read" {
 
     principals {
       type        = "AWS"
-      identifiers = "*"
+      identifiers = ["*"]
     }
 
     resources = [
       "arn:aws:s3:::${var.bucket_name}/*"
-      "arn:aws:s3:::www-${var.bucket_name}/*"
+    ]
+  }
+}
+
+
+
+# S3 Allow Public read access as data object
+data "aws_iam_policy_document" "allow_public_s3_read2" {
+  statement {
+    sid    = "PublicReadGetObject"
+    effect = "Allow"
+
+    actions = [
+      "s3:GetObject",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    resources = [
+      "arn:aws:s3:::www.${var.bucket_name}/*"
     ]
   }
 }

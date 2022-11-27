@@ -1,5 +1,5 @@
 terraform {
-  required_version = "~> 0.14"
+  required_version = ">= 0.14"
 
   required_providers {
     aws = {
@@ -21,5 +21,5 @@ provider "aws" {
 
 provider "aws" {
   alias  = "acm_provider"
-  region = "us-west-2"
+  region = "us-east-1"
 }
